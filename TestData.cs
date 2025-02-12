@@ -13,14 +13,16 @@ public class TestData
             Orders = [
                 new Order() { Id = 1, Amount=4.3M },
                 new Order() { Id = 2, Amount=1.1M }
-            ]
+            ],
+            ReadOnlyColumn = "This value cannot be changed."
         };
         db.Customer.Add(t);
 
         Customer t2 = new Customer()
         {
             Id = 2,
-            Name = "Duncan White"
+            Name = "Duncan White",
+            ReadOnlyColumn = "You cannot change this value."
         };
         db.Customer.Add(t2);
 

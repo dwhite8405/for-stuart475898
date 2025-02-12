@@ -47,6 +47,20 @@ namespace Controllers
         {
             // TODO: check permission
             var Query = await _dbContext.Customer.FindAsync(key);
+            if (null==Query) 
+            {
+                return NotFound();
+            }
+
+            // ReadOnlyColumn is read only.
+            if (delta.TryGetPropertyValue(nameof(Customer.ReadOnlyColumn), out object newValue))
+            {
+                if (newValue is String && newValue != Query.ReadOnlyColumn)
+                {
+                    return BadRequest($"Modifying '{nameof(Customer.ReadOnlyColumn)}' is not allowed.");
+                }
+            }
+
             delta.Patch(Query);
             _dbContext.Customer.Update(Query);
             await _dbContext.SaveChangesAsync();
